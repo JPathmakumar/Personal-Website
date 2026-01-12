@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me // Hacker Mode</title>
+  <style>
+    :root {
+      --green: #00ff9c;
+      --dark: #050b08;
+      --panel: #0b1a14;
+      --glow: 0 0 10px rgba(0, 255, 156, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background: radial-gradient(circle at top, #07140f, var(--dark));
+      color: var(--green);
+      overflow-x: hidden;
+    }
+
+    /* Matrix-style background */
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+    }
+
+    header {
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0,255,156,0.2);
+    }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      text-shadow: var(--glow);
+      margin: 0;
+    }
+
+    .typing {
+      margin-top: 10px;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card {
+      background: linear-gradient(180deg, #0c1f18, var(--panel));
+      border: 1px solid rgba(0,255,156,0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(0,255,156,0.15), transparent);
+      transform: translateX(-100%);
+    }
+
+    .card:hover::after {
+      animation: scan 1.2s ease-in-out;
+    }
+
+    @keyframes scan {
+      to { transform: translateX(100%); }
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+      text-shadow: var(--glow);
+    }
+
+    ul {
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      margin: 4px 4px 0 0;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,156,0.4);
+      font-size: 12px;
+      background: rgba(0,255,156,0.08);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      opacity: 0.7;
+      font-size: 13px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<header>
+  <h1>Jonathan // Hacker Profile</h1>
+  <div class="typing" id="typing"></div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>👾 About Me</h2>
+    <p>
+      I’m a young developer who loves building websites, games, and creative tech projects.
+      I enjoy experimenting with code, learning how systems work, and designing cool digital experiences.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>🧠 Skills</h2>
+    <span class="tag">HTML</span>
+    <span class="tag">CSS</span>
+    <span class="tag">JavaScript</span>
+    <span class="tag">Scratch</span>
+    <span class="tag">UI Design</span>
+    <span class="tag">Problem Solving</span>
+  </section>
+
+  <section class="card">
+    <h2>🕶️ Projects</h2>
+    <ul>
+      <li>Custom banking-style websites</li>
+      <li>Scratch games with advanced logic</li>
+      <li>Mini web browser</li>
+      <li>Creative coding experiments</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>⚡ Motto</h2>
+    <p>
+      <em>“Code is my superpower. Curiosity is my fuel.”</em>
+    </p>
+  </section>
+</main>
+
+<footer>
+  © 2026 Jonathan | Access granted ▓▓▓▓▓ 100%
+</footer>
+
+<script>
+  /* Typing effect */
+  const text = "Initializing profile... Access granted. Welcome to my digital world.";
+  const el = document.getElementById("typing");
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      el.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 40);
+    } else {
+      el.innerHTML += " <span class='cursor'>█</span>";
+    }
+  }
+  type();
+
+  /* Matrix background */
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@";
+  const fontSize = 14;
+  let columns = Math.floor(canvas.width / fontSize);
+  let drops = Array(columns).fill(1);
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff9c";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  setInterval(draw, 33);
+</script>
+
+</body>
+</html>
